@@ -9,11 +9,12 @@ import UIKit
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     @IBOutlet weak var collectionView: UICollectionView!
-    let images = ["pencil", "eraser", "phone", "flower4", "trash", "folder", "tray", "doc", "home", "menu"]
+    let images = ["pencil", "eraser", "phone", "phone", "trash", "folder", "tray", "doc", "tray", "folder"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        // ❌ อย่า register ซ้ำ ถ้าใช้ Storyboard
+//        collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.reloadData()
@@ -27,8 +28,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         let item = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
         let i = indexPath.item
         item.imageView.image = UIImage(systemName: images[i])
-        item.label.text = "่ภาพ \(i + 1)"
+        item.label.text = "ภาพ \(i + 1)"
         return item
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "showDetail", sender: indexPath)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
